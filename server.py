@@ -1,7 +1,14 @@
+print(f"🔎 Running file directly? __name__ = {__name__}")
+
 from flask import Flask, request, jsonify
 from sentence_transformers import SentenceTransformer, util
 
+print("💡 File loaded")
+
+# 🔧 Initialize Flask
 app = Flask(__name__)
+
+# 🧠 Load sentence transformer model
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
 @app.route('/similarity', methods=['POST'])
@@ -17,3 +24,7 @@ def compute_similarity():
     score = util.cos_sim(embeddings[0], embeddings[1]).item()
 
     return jsonify({"similarity": score})
+
+if __name__ == "__main__":
+    print("✅ RUNNING THE SERVER on http://localhost:5000 🚀")
+    app.run(host="0.0.0.0", port=5001, debug=True)
